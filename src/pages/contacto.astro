@@ -1,0 +1,150 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { site, services } from '../data/site';
+---
+<Base title="Contacto" description={`${site.cta}: cuéntenos hacia dónde va su empresa y le proponemos por dónde empezar.`}>
+  <PageHeader
+    eyebrow="Contacto"
+    title={site.cta}
+    lead="Cuéntenos hacia dónde va su empresa y qué equipo necesita para llegar."
+  />
+
+  <section class="section" data-tone="lino">
+    <div class="container portrait">
+      <div class="portrait__rail contact__rail">
+        <p>Escríbanos</p>
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
+
+      <form class="portrait__col form" data-contact-form novalidate>
+        <div class="form__row">
+          <label class="field">
+            <span>Nombre <abbr title="obligatorio">*</abbr></span>
+            <input type="text" name="nombre" autocomplete="name" required />
+          </label>
+          <label class="field">
+            <span>Cargo</span>
+            <input type="text" name="cargo" autocomplete="organization-title" />
+          </label>
+        </div>
+
+        <div class="form__row">
+          <label class="field">
+            <span>Empresa <abbr title="obligatorio">*</abbr></span>
+            <input type="text" name="empresa" autocomplete="organization" required />
+          </label>
+          <label class="field">
+            <span>Sector</span>
+            <select name="sector">
+              <option value="">Seleccione una opción</option>
+              <option>Servicios</option>
+              <option>Comercio</option>
+              <option>Industria</option>
+              <option>Otro</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="form__row">
+          <label class="field">
+            <span>Correo <abbr title="obligatorio">*</abbr></span>
+            <input type="email" name="correo" autocomplete="email" required />
+          </label>
+          <label class="field">
+            <span>Teléfono</span>
+            <input type="tel" name="telefono" autocomplete="tel" />
+          </label>
+        </div>
+
+        <fieldset class="field">
+          <legend>¿Qué le interesa?</legend>
+          <div class="checks">
+            {services.map((s) => (
+              <label class="check"><input type="checkbox" name="servicio" value={s.title} /> {s.title}</label>
+            ))}
+            <label class="check"><input type="checkbox" name="servicio" value="Aún no lo sé" /> Aún no lo sé</label>
+          </div>
+        </fieldset>
+
+        <label class="field">
+          <span>¿Hacia dónde va su empresa en los próximos dos años?</span>
+          <textarea name="mensaje" rows="5"></textarea>
+        </label>
+
+        <input class="honeypot" type="text" name="sitio-web" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <p class="small muted">
+          Al enviar acepta nuestro <a href="/aviso-de-privacidad">aviso de privacidad</a>.
+        </p>
+        <div><button type="submit" class="btn btn--primary">Enviar</button></div>
+        <p class="form__status" data-form-status role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact__rail { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1.5rem; }
+  .contact__rail a { overflow-wrap: anywhere; text-transform: none; letter-spacing: 0; font-size: var(--fs-sm); font-weight: 500; color: var(--ciruela); }
+
+  .form { display: flex; flex-direction: column; gap: 1.25rem; }
+  .form__row { display: grid; gap: 1.25rem; }
+  @media (min-width: 560px) { .form__row { grid-template-columns: 1fr 1fr; } }
+  fieldset { border: 0; padding: 0; margin: 0; }
+  legend { padding: 0; margin-bottom: .6rem; }
+  .field { display: flex; flex-direction: column; gap: .4rem; }
+  .field > span, legend { font-size: var(--fs-sm); font-weight: 500; color: var(--ciruela); }
+  abbr { text-decoration: none; color: var(--ciruela-mid); }
+
+  input[type='text'], input[type='email'], input[type='tel'], select, textarea {
+    width: 100%;
+    padding: .7rem .8rem;
+    font: inherit;
+    font-size: var(--fs-sm);
+    color: var(--tinta);
+    background: var(--papel);
+    border: 1px solid #4a254540;
+    border-radius: var(--radius);
+  }
+  textarea { resize: vertical; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--ciruela-mid); outline-offset: 1px; border-color: transparent; }
+
+  .checks { display: flex; flex-wrap: wrap; gap: .6rem 1.5rem; }
+  .check { display: inline-flex; align-items: center; gap: .5rem; font-size: var(--fs-sm); }
+  .check input { width: 17px; height: 17px; accent-color: var(--ciruela); }
+
+  .honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .form__status { font-size: var(--fs-sm); color: var(--ciruela); }
+  .form__status:empty { display: none; }
+</style>
+
+<script>
+  import { site } from '../data/site';
+
+  /* Sin backend: el envío compone un correo a la dirección de contacto. */
+  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
+    const status = form.querySelector<HTMLElement>('[data-form-status]');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const data = new FormData(form);
+      if (data.get('sitio-web')) return; // honeypot
+
+      const body = [
+        `Nombre: ${data.get('nombre') ?? ''}`,
+        `Cargo: ${data.get('cargo') ?? ''}`,
+        `Empresa: ${data.get('empresa') ?? ''}`,
+        `Sector: ${data.get('sector') ?? ''}`,
+        `Correo: ${data.get('correo') ?? ''}`,
+        `Teléfono: ${data.get('telefono') ?? ''}`,
+        `Le interesa: ${data.getAll('servicio').join(', ')}`,
+        '',
+        String(data.get('mensaje') ?? ''),
+      ].join('\n');
+
+      window.location.href = `mailto:${site.email}?subject=${encodeURIComponent('Contacto desde humanzia.mx')}&body=${encodeURIComponent(body)}`;
+      if (status) status.textContent = 'Abriendo su programa de correo…';
+    });
+  });
+</script>

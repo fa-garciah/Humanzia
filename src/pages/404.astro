@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+---
+<Base title="Página no encontrada">
+  <PageHeader eyebrow="Error 404" title="Esta página no existe" lead="Puede que el enlace haya cambiado.">
+    <p class="back"><a class="link-arrow" href="/">Volver al inicio →</a></p>
+  </PageHeader>
+</Base>
+
+<style>
+  .back { margin-top: 2rem; }
+</style>

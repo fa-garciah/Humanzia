@@ -1,0 +1,26 @@
+# Dependencias y compilación
+node_modules/
+dist/
+.astro/
+
+# Configuración local de herramientas y editores
+.claude/
+.vscode/
+.idea/
+CLAUDE.md
+*.local.json
+
+# Notas internas y material de trabajo
+NOTES.md
+RECON/
+
+# Entorno
+.env
+.env.*
+!.env.example
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*

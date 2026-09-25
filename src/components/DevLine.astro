@@ -1,0 +1,73 @@
+---
+/* El recurso gráfico de la marca: la línea de desarrollo de una persona.
+   Un retrato vertical que va de «Hoy» (abajo) al horizonte de dos años (arriba),
+   con un hito por cada servicio. Se dibuja una vez al cargar; sin movimiento
+   si el usuario lo pide. */
+import { site } from '../data/site';
+---
+<figure class="devline" aria-label={`Línea de desarrollo de una persona, de hoy a ${site.horizon}: reclutamiento, evaluación y capacitación.`}>
+  <svg viewBox="0 0 400 500" role="img" aria-hidden="true">
+    <g class="devline__grid">
+      <line x1="28" x2="372" y1="440" y2="440" />
+      <line x1="28" x2="372" y1="330" y2="330" />
+      <line x1="28" x2="372" y1="200" y2="200" />
+      <line x1="28" x2="372" y1="80" y2="80" />
+    </g>
+    <text class="devline__axis" x="28" y="468">Hoy</text>
+    <text class="devline__axis" x="28" y="66">{site.horizon}</text>
+
+    <path class="devline__path" pathLength="1"
+      d="M28 440 H120 C185 440 205 372 240 330 C275 288 300 250 315 200 C327 160 336 118 344 92" />
+
+    <g class="devline__nodes">
+      <circle cx="120" cy="440" r="6" />
+      <circle cx="240" cy="330" r="6" />
+      <circle cx="315" cy="200" r="6" />
+    </g>
+    <circle class="devline__head" cx="348" cy="72" r="13" />
+
+    <g class="devline__labels">
+      <text x="120" y="420" text-anchor="middle">Reclutamiento</text>
+      <text x="224" y="334" text-anchor="end">Evaluación</text>
+      <text x="299" y="204" text-anchor="end">Capacitación</text>
+    </g>
+  </svg>
+  <figcaption>La misma persona, dos años después.</figcaption>
+</figure>
+
+<style>
+  .devline {
+    position: relative;
+    background: var(--ciruela);
+    color: var(--lino);
+    border-radius: var(--radius);
+    padding: clamp(1.25rem, 3vw, 2rem);
+    aspect-ratio: 4 / 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 30rem;
+  }
+  .devline svg { width: 100%; height: auto; overflow: visible; }
+  .devline__grid line { stroke: #f4efe926; stroke-width: 1; stroke-dasharray: 2 5; }
+  .devline__axis { fill: var(--malva); font-family: var(--font-body); font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+  .devline__path { fill: none; stroke: var(--lino); stroke-width: 3; stroke-linecap: round; }
+  .devline__nodes circle { fill: var(--ciruela); stroke: var(--lino); stroke-width: 2.5; }
+  .devline__head { fill: var(--lino); }
+  .devline__labels text { fill: var(--lino); font-family: var(--font-display); font-size: 19px; font-style: italic; }
+  .devline figcaption { font-size: var(--fs-xs); color: var(--malva); letter-spacing: .04em; }
+
+  /* Trazo al cargar */
+  .js .devline__path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2.2s .3s var(--ease) forwards; }
+  .js .devline__nodes circle, .js .devline__labels text, .js .devline__head { opacity: 0; animation: appear .5s var(--ease) forwards; }
+  .js .devline__nodes circle:nth-child(1), .js .devline__labels text:nth-child(1) { animation-delay: .7s; }
+  .js .devline__nodes circle:nth-child(2), .js .devline__labels text:nth-child(2) { animation-delay: 1.3s; }
+  .js .devline__nodes circle:nth-child(3), .js .devline__labels text:nth-child(3) { animation-delay: 1.9s; }
+  .js .devline__head { animation-delay: 2.4s; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes appear { to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .js .devline__path { animation: none; stroke-dashoffset: 0; }
+    .js .devline__nodes circle, .js .devline__labels text, .js .devline__head { animation: none; opacity: 1; }
+  }
+</style>

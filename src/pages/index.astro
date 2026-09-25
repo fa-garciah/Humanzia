@@ -1,0 +1,245 @@
+---
+import Base from '../layouts/Base.astro';
+import DevLine from '../components/DevLine.astro';
+import Figure from '../components/Figure.astro';
+import { site, services, steps, sectors } from '../data/site';
+import taller from '../assets/photos/capacitacion-taller.jpg';
+import planta from '../assets/photos/industria-planta.jpg';
+---
+<Base>
+  <!-- Portada: el texto y el retrato de la línea de desarrollo -->
+  <section class="section hero" data-tone="lino">
+    <div class="container hero__grid">
+      <div class="hero__text">
+        <p class="eyebrow">Capital humano · Reclutamiento, evaluación y capacitación</p>
+        <h1 class="display">Soluciones de talento para organizaciones que <em>quieren crecer</em></h1>
+        <p class="lead hero__lead">
+          Su empresa no será la misma dentro de dos años, y su equipo tampoco debería serlo.
+          Elegimos, medimos y formamos a las personas pensando en la organización que usted
+          quiere ser en {site.horizon}.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="/contacto">{site.cta}</a>
+          <a class="btn btn--ghost" href="/servicios">Ver servicios</a>
+        </div>
+      </div>
+      <DevLine />
+    </div>
+  </section>
+
+  <!-- Franja fotográfica: el equipo en formación -->
+  <section class="band" data-tone="lino">
+    <div class="container">
+      <Figure
+        src={taller}
+        alt="Un grupo de colaboradores atiende a una facilitadora durante un taller de capacitación en una sala de juntas."
+        ratio="16 / 6"
+        caption="Capacitación en sala: el equipo que su empresa va a necesitar se forma hoy."
+      />
+    </div>
+  </section>
+
+  <!-- El enfoque: la vacante de hoy frente al equipo de dentro de dos años -->
+  <section class="section" data-tone="lino">
+    <div class="container portrait">
+      <p class="portrait__rail">El enfoque</p>
+      <div class="portrait__col portrait__col--wide reveal">
+        <h2 class="enfoque__title">Una vacante se cubre en semanas. Un equipo se construye en años.</h2>
+        <div class="compare">
+          <div class="compare__item">
+            <p class="compare__when">Hoy</p>
+            <p class="compare__q">¿Quién puede ocupar este puesto?</p>
+          </div>
+          <div class="compare__item compare__item--next">
+            <p class="compare__when">En {site.horizon}</p>
+            <p class="compare__q">¿Quién puede llevar este puesto más lejos?</p>
+          </div>
+        </div>
+        <p class="enfoque__body muted">
+          Trabajamos con la segunda pregunta. Cada contratación, cada evaluación y cada curso
+          forman parte del mismo plan: tener listas a las personas que su crecimiento va a necesitar,
+          antes de que las necesite.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Los tres servicios, como tramos de la línea -->
+  <section class="section" data-tone="lino-2" id="servicios">
+    <div class="container portrait">
+      <p class="portrait__rail">Servicios</p>
+      <div class="portrait__col reveal">
+        <h2>Tres tramos de una misma línea</h2>
+        <p class="lead section__intro">
+          Puede contratarlos por separado. Juntos, acompañan a una persona desde que llega hasta que
+          está lista para el siguiente puesto.
+        </p>
+      </div>
+    </div>
+
+    <ol class="container track">
+      {services.map((s) => (
+        <li class="portrait track__item reveal">
+          <p class="portrait__rail track__when">{s.when}</p>
+          <div class="portrait__col track__body">
+            <span class="track__n">{s.n}</span>
+            <h3>{s.title}</h3>
+            <p>{s.summary}</p>
+            <p class="track__outcome"><strong>Lo que obtiene:</strong> {s.outcome}</p>
+            <a class="link-arrow" href={`/servicios#${s.slug}`}>Qué incluye →</a>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- Método -->
+  <section class="section" data-tone="lino" id="metodo">
+    <div class="container portrait">
+      <p class="portrait__rail">Método</p>
+      <div class="portrait__col reveal">
+        <h2>Un plan de talento a dos años</h2>
+        <p class="lead section__intro">Empezamos por su plan de negocio, no por la vacante.</p>
+      </div>
+    </div>
+    <div class="container portrait">
+      <span class="portrait__rail" aria-hidden="true"></span>
+      <ol class="steps portrait__col--wide">
+        {steps.map((step) => (
+          <li class="steps__item reveal">
+            <span class="steps__n">{step.n}</span>
+            <h3>{step.title}</h3>
+            <p class="muted">{step.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Para quién -->
+  <section class="section" data-tone="lino-2">
+    <div class="container portrait">
+      <p class="portrait__rail">Para quién</p>
+      <div class="portrait__col--wide para">
+        <Figure
+          class="para__photo reveal"
+          src={planta}
+          alt="Un técnico con lentes de seguridad mide un marco metálico en un taller industrial."
+          ratio="4 / 5"
+          sizes="(min-width: 900px) 360px, 100vw"
+        />
+        <div>
+        <h2 class="reveal">Empresas de servicios, comercio e industria</h2>
+        <ul class="sectors">
+          {sectors.map((s) => (
+            <li class="sectors__item reveal">
+              <h3>{s.title}</h3>
+              <p class="muted">{s.text}</p>
+            </li>
+          ))}
+        </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Llamado a la acción -->
+  <section class="section" data-tone="ciruela">
+    <div class="container portrait">
+      <p class="portrait__rail">Contacto</p>
+      <div class="portrait__col cta reveal">
+        <h2>¿Cómo quiere que sea su equipo en {site.horizon}?</h2>
+        <p class="lead cta__lead">
+          Cuéntenos hacia dónde va su empresa. En una primera conversación le proponemos por dónde
+          empezar.
+        </p>
+        <a class="btn btn--primary" href="/contacto">{site.cta}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Portada */
+  .hero { padding-top: clamp(2.5rem, 6vw, 5rem); }
+  .hero__grid { display: grid; gap: clamp(2.5rem, 5vw, 4.5rem); align-items: center; }
+  @media (min-width: 900px) { .hero__grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); } }
+  .hero__grid :global(.devline) { justify-self: center; width: 100%; }
+  .hero .display em { color: var(--ciruela-mid); }
+  .hero__lead { margin-top: 1.5rem; }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+
+  /* Franja fotográfica */
+  .band { background: var(--lino); padding-bottom: clamp(1rem, 3vw, 2rem); }
+
+  /* Enfoque */
+  .enfoque__title { max-width: 22ch; }
+  .compare { display: grid; gap: 1px; margin-top: 2.5rem; background: var(--line); border: 1px solid var(--line); }
+  @media (min-width: 640px) { .compare { grid-template-columns: 1fr 1fr; } }
+  .compare__item { background: var(--papel); padding: clamp(1.25rem, 3vw, 2rem); }
+  .compare__item--next { background: var(--ciruela); color: var(--lino); }
+  .compare__when { font-size: var(--fs-xs); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ciruela-mid); }
+  .compare__item--next .compare__when { color: var(--malva); }
+  .compare__q { margin-top: .6rem; font-family: var(--font-display); font-size: var(--fs-h3); line-height: 1.25; }
+  .enfoque__body { margin-top: 1.75rem; max-width: var(--measure); }
+
+  .section__intro { margin-top: 1rem; }
+
+  /* Servicios sobre la línea */
+  .track { margin-top: clamp(2.5rem, 5vw, 3.5rem); list-style: none; }
+  .track__item { position: relative; padding-block: 2rem; border-top: 1px solid var(--line); }
+  .track__item:last-child { border-bottom: 1px solid var(--line); }
+  .track__body { position: relative; }
+  .track__body > * + * { margin-top: .75rem; }
+  .track__n { display: block; font-family: var(--font-display); font-size: 1rem; color: var(--ciruela-mid); }
+  .track__body h3 { margin-top: .25rem; }
+  .track__outcome { color: var(--ciruela); }
+  .track__body .link-arrow { display: inline-block; margin-top: 1rem; }
+  /* En escritorio, la línea corre vertical por el riel y cada servicio es un nodo */
+  @media (min-width: 900px) {
+    /* Tramo de línea de un nodo al siguiente; el último no sigue */
+    .track__item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 2.35rem; bottom: -2.35rem;
+      left: calc(var(--rail) - 2.25rem);
+      width: 2px;
+      background: var(--ciruela);
+      opacity: .35;
+    }
+    .track__item { border: 0 !important; padding-block: 1.75rem 2.5rem; }
+    .track__when { padding-top: .35rem; }
+    .track__item::before {
+      content: '';
+      position: absolute;
+      top: 2.35rem;
+      left: calc(var(--rail) - 2.25rem - 6px);
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--lino-2);
+      border: 2.5px solid var(--ciruela);
+      z-index: 1;
+    }
+    .track__item:last-child::before { background: var(--ciruela); }
+  }
+
+  /* Método */
+  .steps { display: grid; gap: 2rem clamp(1.5rem, 3vw, 2.5rem); margin-top: clamp(2rem, 4vw, 3rem); list-style: none; }
+  @media (min-width: 640px) { .steps { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1100px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+  .steps__item { padding-top: 1.1rem; border-top: 1px solid var(--line); }
+  .steps__n { display: block; font-family: var(--font-display); font-size: 2rem; line-height: 1; color: var(--ciruela-mid); margin-bottom: .75rem; }
+  .steps__item h3 { font-size: 1.3rem; margin-bottom: .5rem; }
+
+  /* Para quién */
+  .para { display: grid; gap: clamp(2rem, 4vw, 3.5rem); align-items: center; }
+  @media (min-width: 900px) { .para { grid-template-columns: minmax(0, 360px) minmax(0, 1fr); } }
+  :global(.para__photo) { max-width: 360px; }
+  .sectors { display: grid; gap: 1.75rem; margin-top: 2rem; list-style: none; }
+  .sectors__item { padding-left: 1rem; border-left: 2px solid var(--ciruela); }
+  .sectors__item h3 { font-size: 1.3rem; margin-bottom: .4rem; }
+
+  /* CTA */
+  .cta h2 { max-width: 20ch; }
+  .cta__lead { margin-block: 1.25rem 2rem; }
+</style>

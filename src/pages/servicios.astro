@@ -1,0 +1,94 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Figure from '../components/Figure.astro';
+import { site, services } from '../data/site';
+import entrevista from '../assets/photos/entrevista.jpg';
+---
+<Base title="Servicios" description="Reclutamiento, evaluación y capacitación: los tres tramos de la línea de desarrollo de su equipo.">
+  <PageHeader
+    eyebrow="Servicios"
+    title="Reclutamiento, evaluación y capacitación"
+    lead="Tres servicios que se pueden contratar por separado y que, juntos, forman un plan de talento a dos años."
+  >
+    <nav class="jump" aria-label="Servicios en esta página">
+      {services.map((s) => <a href={`#${s.slug}`}>{s.n} · {s.title}</a>)}
+    </nav>
+  </PageHeader>
+
+  <section class="band" data-tone="lino">
+    <div class="container portrait">
+      <span class="portrait__rail" aria-hidden="true"></span>
+      <Figure
+        class="portrait__col--wide"
+        src={entrevista}
+        alt="Dos mujeres conversan frente a frente en una mesa junto a un ventanal, durante una entrevista."
+        ratio="16 / 7"
+        sizes="(min-width: 1160px) 930px, 100vw"
+        eager
+      />
+    </div>
+  </section>
+
+  {services.map((s, i) => (
+    <section class="section service" id={s.slug} data-tone={i % 2 ? 'lino-2' : 'lino'}>
+      <div class="container portrait">
+        <div class="portrait__rail service__rail">
+          <span class="service__n">{s.n}</span>
+          <span>{s.when}</span>
+        </div>
+        <div class="portrait__col portrait__col--wide service__grid reveal">
+          <div>
+            <h2>{s.title}</h2>
+            <p class="lead service__summary">{s.summary}</p>
+          </div>
+          <div class="service__detail">
+            <h3 class="service__head">Qué incluye</h3>
+            <ul class="service__list">{s.includes.map((item) => <li>{item}</li>)}</ul>
+            <div class="service__outcome">
+              <h3 class="service__head">Lo que obtiene</h3>
+              <p>{s.outcome}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section" data-tone="ciruela">
+    <div class="container portrait">
+      <p class="portrait__rail">Siguiente paso</p>
+      <div class="portrait__col">
+        <h2>¿No sabe por cuál empezar?</h2>
+        <p class="lead next__lead">
+          Casi siempre conviene empezar por evaluar al equipo que ya tiene. Se lo explicamos en una
+          primera conversación.
+        </p>
+        <a class="btn btn--primary" href="/contacto">{site.cta}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .jump { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-top: 2rem; font-size: var(--fs-sm); font-weight: 600; }
+  .jump a { color: var(--ciruela); text-decoration: none; border-bottom: 1px solid var(--line); }
+  .jump a:hover { border-color: currentColor; }
+
+  .band { background: var(--lino); padding-top: clamp(2rem, 4vw, 3rem); }
+  .service { scroll-margin-top: 70px; }
+  .service__rail { display: flex; flex-direction: column; gap: .35rem; }
+  .service__n { font-family: var(--font-display); font-size: 2.75rem; line-height: 1; letter-spacing: 0; text-transform: none; font-weight: 400; color: var(--ciruela); }
+  .service__grid { display: grid; gap: 2rem clamp(2rem, 5vw, 4rem); }
+  @media (min-width: 900px) { .service__grid { grid-template-columns: 1.1fr 1fr; } }
+  .service__summary { margin-top: 1rem; }
+
+  .service__head { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: .75rem; }
+  .service__list li { padding-block: .6rem; border-top: 1px solid var(--line); }
+  .service__list li:last-child { border-bottom: 1px solid var(--line); }
+  .service__outcome { margin-top: 1.75rem; padding: 1.25rem 1.4rem; background: var(--ciruela); color: var(--lino); border-radius: var(--radius); }
+  .service__outcome .service__head { color: var(--malva); margin-bottom: .4rem; }
+  .service__outcome p { font-family: var(--font-display); font-size: 1.2rem; line-height: 1.35; }
+
+  .next__lead { margin-block: 1.25rem 2rem; }
+</style>

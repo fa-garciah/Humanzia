@@ -1,0 +1,40 @@
+---
+/* La única forma en que una foto entra a una página. Envuelve astro:assets para que
+   cada imagen tenga tamaños responsivos, dimensiones intrínsecas (sin saltos de layout)
+   y carga diferida. Las fotos viven en src/assets/photos/ y se importan: si falta una,
+   falla la compilación en vez de publicar un <img> roto. */
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  /** aspect-ratio CSS, p. ej. "16 / 7". Sin él se respeta la proporción del archivo. */
+  ratio?: string;
+  sizes?: string;
+  caption?: string;
+  eager?: boolean;
+  class?: string;
+}
+const { src, alt, ratio, sizes = '(min-width: 1160px) 1080px, 100vw', caption, eager = false, class: className } = Astro.props;
+
+// nunca pedir un ancho mayor que el original
+const widths = [480, 800, 1200, 1600, 2000].filter((w) => w < src.width).concat(src.width);
+---
+<figure class:list={['figure', className]} style={ratio ? `--ratio:${ratio}` : undefined}>
+  <Image src={src} alt={alt} widths={widths} sizes={sizes} format="webp" quality={78}
+    loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .figure { margin: 0; }
+  .figure img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--ratio, auto);
+    object-fit: cover;
+    border-radius: var(--radius);
+    background: var(--lino-2);
+  }
+  figcaption { margin-top: .6rem; font-size: var(--fs-xs); color: var(--muted); }
+</style>

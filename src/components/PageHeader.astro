@@ -1,0 +1,19 @@
+---
+interface Props { eyebrow: string; title: string; lead?: string }
+const { eyebrow, title, lead } = Astro.props;
+---
+<section class="section page-header" data-tone="lino">
+  <div class="container portrait">
+    <p class="portrait__rail">{eyebrow}</p>
+    <div class="portrait__col">
+      <h1>{title}</h1>
+      {lead && <p class="lead page-header__lead">{lead}</p>}
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-header { padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2rem, 5vw, 3.5rem); border-bottom: 1px solid var(--line); }
+  .page-header__lead { margin-top: 1.25rem; }
+</style>

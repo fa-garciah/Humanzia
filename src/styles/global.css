@@ -1,0 +1,169 @@
+/* ============================================================
+   HUMANZIA — sistema de diseño
+   Ciruela sobre lino, Petrona para titulares, Gantari para texto.
+   Maquetación de retrato: una columna de lectura angosta con un
+   riel a la izquierda, por donde corre la línea de desarrollo.
+   ============================================================ */
+:root {
+  /* — Color — */
+  --ciruela:      #4a2545;
+  --ciruela-deep: #321830;
+  --ciruela-mid:  #7a4f73;
+  --malva:        #d9bcd0;   /* acento sobre fondo ciruela */
+  --lino:         #f4efe9;
+  --lino-2:       #ebe3d9;
+  --papel:        #fbf9f6;
+  --tinta:        #2e1d2b;   /* texto corrido */
+
+  /* — Tipografía — */
+  --font-display: 'Petrona Variable', Georgia, serif;
+  --font-body: 'Gantari Variable', system-ui, sans-serif;
+
+  --fs-display: clamp(2.5rem, 1.6rem + 3.8vw, 4.6rem);
+  --fs-h1:      clamp(2.2rem, 1.6rem + 2.4vw, 3.5rem);
+  --fs-h2:      clamp(1.75rem, 1.4rem + 1.5vw, 2.6rem);
+  --fs-h3:      clamp(1.3rem, 1.16rem + .6vw, 1.65rem);
+  --fs-lg:      clamp(1.06rem, 1rem + .3vw, 1.2rem);
+  --fs-base:    1.0625rem;
+  --fs-sm:      .92rem;
+  --fs-xs:      .8rem;
+
+  /* — Espaciado y forma — */
+  --container: 1160px;
+  --rail: 150px;              /* ancho del riel en escritorio */
+  --measure: 40rem;           /* ancho de la columna de lectura */
+  --gutter: clamp(1rem, 4vw, 2.75rem);
+  --section-y: clamp(4rem, 8vw, 7rem);
+  --radius: 3px;
+
+  --ease: cubic-bezier(.22, .61, .36, 1);
+}
+
+/* — Reset — */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: 1.65;
+  color: var(--tinta);
+  background: var(--lino);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; }
+h1, h2, h3, h4, p, ul, ol, figure, blockquote, dl, dd { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--ciruela-mid); outline-offset: 3px; }
+::selection { background: var(--ciruela); color: var(--lino); }
+
+/* — Tipografía — */
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -.012em;
+  color: var(--heading, var(--ciruela));
+  text-wrap: balance;
+}
+.display { font-size: var(--fs-display); font-weight: 400; }
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+em { font-style: italic; }
+p { text-wrap: pretty; }
+.lead { font-size: var(--fs-lg); color: var(--muted); max-width: 36rem; }
+.small { font-size: var(--fs-sm); }
+.muted { color: var(--muted); }
+
+.eyebrow {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+/* — Tonos de sección — */
+:root, [data-tone='lino'] {
+  --bg: var(--lino); --fg: var(--tinta); --heading: var(--ciruela);
+  --muted: #6b5966; --accent: var(--ciruela-mid); --line: #4a254526;
+}
+[data-tone='lino-2'] {
+  --bg: var(--lino-2); --fg: var(--tinta); --heading: var(--ciruela);
+  --muted: #62505d; --accent: var(--ciruela-mid); --line: #4a25452e;
+}
+[data-tone='ciruela'] {
+  --bg: var(--ciruela); --fg: #f4efe9; --heading: var(--lino);
+  --muted: #d6c3d0; --accent: var(--malva); --line: #f4efe933;
+}
+
+.section {
+  position: relative;
+  background: var(--bg);
+  color: var(--fg);
+  padding-block: var(--section-y);
+}
+.section--tight { padding-block: clamp(2.75rem, 5vw, 4rem); }
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* — Retrato: riel + columna — */
+.portrait { display: grid; gap: .75rem 0; }
+.portrait__rail { font-size: var(--fs-xs); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.portrait__col { max-width: var(--measure); }
+.portrait__col--wide { max-width: none; }
+@media (min-width: 900px) {
+  .portrait { grid-template-columns: var(--rail) minmax(0, 1fr); }
+  .portrait__rail { padding-top: .55rem; }
+}
+
+.rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
+
+/* — Botones y enlaces — */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .55em;
+  padding: .85em 1.35em;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  text-decoration: none;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+}
+.btn--primary { background: var(--ciruela); color: var(--lino); }
+.btn--primary:hover { background: var(--ciruela-deep); }
+.btn--ghost { border-color: var(--line); color: var(--heading); }
+.btn--ghost:hover { border-color: currentColor; }
+[data-tone='ciruela'] .btn--primary { background: var(--lino); color: var(--ciruela); }
+[data-tone='ciruela'] .btn--primary:hover { background: var(--papel); }
+
+.link-arrow {
+  font-weight: 600;
+  color: var(--heading);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: .1em;
+  transition: border-color .2s var(--ease);
+}
+.link-arrow:hover { border-color: currentColor; }
+
+/* — Revelado al hacer scroll (solo con JS; sin JS todo se ve) — */
+.js .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.js .reveal.is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+}

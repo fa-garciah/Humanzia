@@ -1,0 +1,74 @@
+---
+import '@fontsource-variable/petrona';
+import '@fontsource-variable/petrona/wght-italic.css';
+import '@fontsource-variable/gantari';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+interface Props { title?: string; description?: string }
+const {
+  title,
+  description = `${site.name}: ${site.slogan}. Reclutamiento, evaluación y capacitación para empresas de servicios, comercio e industria.`,
+} = Astro.props;
+
+const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.slogan}`;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: site.name,
+  url: site.url,
+  email: site.email,
+  slogan: site.slogan,
+  areaServed: 'MX',
+  knowsAbout: ['Reclutamiento', 'Evaluación de personal', 'Capacitación'],
+};
+---
+<!doctype html>
+<html lang={site.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#4a2545" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:url" content={canonical} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline></script>
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      const targets = document.querySelectorAll<HTMLElement>('.reveal');
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        targets.forEach((el) => el.classList.add('is-visible'));
+      } else {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          });
+        }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
+        targets.forEach((el) => io.observe(el));
+        // Red de seguridad: si el observer no dispara, mostrar todo igualmente.
+        window.addEventListener('load', () => setTimeout(() => targets.forEach((el) => el.classList.add('is-visible')), 2500));
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { site } from '../data/site';
+/* PENDIENTE: razón social y domicilio del responsable. Este texto es una base; debe revisarlo
+   el área legal antes de publicar (LFPDPPP). */
+---
+<Base title="Aviso de privacidad">
+  <PageHeader eyebrow="Legal" title="Aviso de privacidad" />
+  <section class="section" data-tone="lino">
+    <div class="container portrait">
+      <span class="portrait__rail" aria-hidden="true"></span>
+      <div class="portrait__col legal">
+        <h2>Responsable</h2>
+        <p>
+          {site.name} es responsable del tratamiento de los datos personales que usted nos proporciona.
+          Para cualquier asunto relacionado con este aviso puede escribir a
+          <a href={`mailto:${site.email}`}>{site.email}</a>.
+        </p>
+
+        <h2>Datos que recabamos</h2>
+        <p>
+          A través del formulario de contacto: nombre, cargo, empresa, sector, correo electrónico,
+          teléfono y el mensaje que decida enviarnos. En procesos de reclutamiento y evaluación
+          recabamos, con su consentimiento, los datos que cada candidato entrega para su postulación.
+        </p>
+
+        <h2>Para qué los usamos</h2>
+        <p>
+          Para responder a su solicitud, preparar una propuesta de servicios y dar seguimiento a la
+          relación comercial. No vendemos ni cedemos sus datos a terceros.
+        </p>
+
+        <h2>Sus derechos</h2>
+        <p>
+          Usted puede acceder a sus datos, rectificarlos, cancelarlos u oponerse a su uso (derechos ARCO),
+          así como revocar su consentimiento, escribiendo a <a href={`mailto:${site.email}`}>{site.email}</a>.
+        </p>
+
+        <h2>Cambios a este aviso</h2>
+        <p>Cualquier cambio a este aviso se publicará en esta página.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legal h2 { font-size: var(--fs-h3); margin-top: 2.25rem; margin-bottom: .6rem; }
+  .legal h2:first-child { margin-top: 0; }
+  .legal a { color: var(--ciruela); }
+</style>

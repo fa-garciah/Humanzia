@@ -1,0 +1,83 @@
+---
+import Logo from './Logo.astro';
+import { site } from '../data/site';
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+<header class="header">
+  <a href="#main" class="skip">Saltar al contenido</a>
+  <div class="container header__inner">
+    <a href="/" class="header__logo" aria-label={`${site.name}, inicio`}><Logo /></a>
+
+    <nav class="header__nav" aria-label="Navegación principal">
+      {site.nav.map((item) => (
+        <a href={item.href} class:list={['header__link', path === item.href && 'is-active']} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a>
+      ))}
+    </nav>
+    <a href="/contacto" class="btn btn--primary header__cta">{site.cta}</a>
+
+    <button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
+      <span></span><span></span>
+    </button>
+  </div>
+
+  <nav id="menu" class="menu" aria-label="Navegación móvil" hidden>
+    <div class="container">
+      <a href="/" class="menu__link">Inicio</a>
+      {site.nav.map((item) => <a href={item.href} class="menu__link">{item.label}</a>)}
+      <a href="/contacto" class="btn btn--primary menu__cta">{site.cta}</a>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--lino) 94%, transparent);
+    backdrop-filter: blur(8px);
+    color: var(--ciruela);
+    border-bottom: 1px solid #4a25451a;
+  }
+  .skip {
+    position: absolute; left: -9999px; top: .5rem;
+    background: var(--ciruela); color: var(--lino);
+    padding: .6em 1em; border-radius: var(--radius); font-size: var(--fs-sm);
+  }
+  .skip:focus { left: 1rem; z-index: 5; }
+
+  .header__inner { display: flex; align-items: center; gap: clamp(1rem, 3vw, 2.25rem); min-height: 70px; }
+  .header__logo { margin-right: auto; text-decoration: none; }
+
+  .header__nav, .header__cta { display: none; }
+  .header__link { font-size: var(--fs-sm); font-weight: 500; text-decoration: none; padding-block: .3em; border-bottom: 1px solid transparent; transition: border-color .2s var(--ease); }
+  .header__link:hover, .header__link.is-active { border-color: currentColor; }
+  .header__cta { padding: .65em 1.1em; }
+
+  .burger { display: flex; flex-direction: column; justify-content: center; gap: 6px; width: 28px; height: 28px; background: none; border: 0; padding: 0; cursor: pointer; }
+  .burger span { display: block; height: 2px; background: currentColor; border-radius: 2px; transition: transform .25s var(--ease); }
+  .burger[aria-expanded='true'] span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+  .burger[aria-expanded='true'] span:nth-child(2) { transform: translateY(-4px) rotate(-45deg); }
+
+  .menu { border-top: 1px solid #4a25451a; padding-block: 1rem 1.5rem; }
+  .menu .container { display: flex; flex-direction: column; gap: .25rem; }
+  .menu__link { font-family: var(--font-display); font-size: 1.5rem; text-decoration: none; padding-block: .35rem; }
+  .menu__cta { align-self: flex-start; margin-top: 1rem; }
+
+  @media (min-width: 860px) {
+    .header__nav { display: flex; gap: clamp(1.25rem, 2.5vw, 2rem); }
+    .header__cta { display: inline-flex; }
+    .burger, .menu { display: none; }
+  }
+</style>
+
+<script>
+  const burger = document.querySelector<HTMLButtonElement>('.burger');
+  const menu = document.getElementById('menu');
+  burger?.addEventListener('click', () => {
+    const open = burger.getAttribute('aria-expanded') !== 'true';
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    if (menu) menu.hidden = !open;
+  });
+</script>
